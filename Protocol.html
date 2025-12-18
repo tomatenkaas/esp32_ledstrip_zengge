@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Protocol.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+<link rel="stylesheet" href="file:///home/put/Documents/esp32_ledstrip_zengge/file%3A/home/put/Documents/markdown-pdf-style.css" type="text/css">
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="protocol-beschrijving-zengge--lednetwf-bluetooth-le">Protocol Beschrijving: Zengge / LEDnetWF Bluetooth LE</h1>
+<p>Dit document beschrijft het onderschepte protocol voor de <strong>PhyplusMicro</strong> (Zengge) LED-controller (Model: <code>LEDnetWF020033435D5B</code>). De controller werkt via Bluetooth Low Energy (BLE) op Service <code>0xFFFF</code>.</p>
+<h2 id="1-verbinding--handshake">1. Verbinding &amp; Handshake</h2>
+<p>Voordat de controller commando's accepteert, moet er een notificatie-handshake plaatsvinden op de configuratie-karakteristiek.</p>
+<ul>
+<li><strong>Service UUID:</strong> <code>FFFF</code></li>
+<li><strong>Data Karakteristiek (TX/RX):</strong> <code>FF01</code> (Handle: <code>0x0017</code>)</li>
+<li><strong>Config Karakteristiek (CCC):</strong> <code>FF02</code> (Handle: <code>0x0015</code>)</li>
+</ul>
+<p><strong>Stappen:</strong></p>
+<ol>
+<li>Verbind met het MAC-adres.</li>
+<li>Schrijf <code>0x01 0x00</code> naar de Descriptor (<code>0x2902</code>) van karakteristiek <code>FF02</code> om notificaties te activeren.</li>
+<li>Wacht ~500ms voordat het eerste commando wordt gestuurd.</li>
+</ol>
+<h2 id="2-pakket-structuur">2. Pakket Structuur</h2>
+<p>Alle commando's worden verzonden als een <strong>Write Command (0x52)</strong> (geen Request) naar karakteristiek <code>FF01</code>. Een pakket is doorgaans <strong>16 bytes</strong> lang.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">Byte</th>
+<th style="text-align:left">Waarde</th>
+<th style="text-align:left">Omschrijving</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">0-7</td>
+<td style="text-align:left"><code>00 14 80 00 00 08 09 0b</code></td>
+<td style="text-align:left"><strong>Vaste Header:</strong> Identificatie voor dit type controller.</td>
+</tr>
+<tr>
+<td style="text-align:left">8</td>
+<td style="text-align:left"><code>0xXX</code></td>
+<td style="text-align:left"><strong>Command Byte:</strong> Bepaalt het type actie (Kleur, Power, etc).</td>
+</tr>
+<tr>
+<td style="text-align:left">9</td>
+<td style="text-align:left"><code>0xXX</code></td>
+<td style="text-align:left"><strong>Parameter 1</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">10</td>
+<td style="text-align:left"><code>0xXX</code></td>
+<td style="text-align:left"><strong>Parameter 2</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">11</td>
+<td style="text-align:left"><code>0xXX</code></td>
+<td style="text-align:left"><strong>Parameter 3</strong></td>
+</tr>
+<tr>
+<td style="text-align:left">12-14</td>
+<td style="text-align:left"><code>00 00 0f</code></td>
+<td style="text-align:left"><strong>Padding/Mask:</strong> Vaste afsluiting van de payload.</td>
+</tr>
+<tr>
+<td style="text-align:left">15</td>
+<td style="text-align:left"><code>0xXX</code></td>
+<td style="text-align:left"><strong>Checksum:</strong> Som van Byte 8 t/m 14 (8-bit truncating).</td>
+</tr>
+</tbody>
+</table>
+<h2 id="3-commandos">3. Commando's</h2>
+<h3 id="31-power-aanuit">3.1 Power (Aan/Uit)</h3>
+<p>Gebruikt Command Byte <code>0x71</code>.</p>
+<ul>
+<li><strong>AAN:</strong> <code>00 14 80 00 00 08 09 0b 71 23 0f 00 00 00 0f a3</code></li>
+<li><strong>UIT:</strong> <code>00 14 80 00 00 08 09 0b 71 24 0f 00 00 00 0f a4</code></li>
+</ul>
+<h3 id="32-kleur-instellen-rgb">3.2 Kleur Instellen (RGB)</h3>
+<p>Gebruikt Command Byte <code>0x31</code>.</p>
+<ul>
+<li><strong>Structuur:</strong> <code>0x31 [R] [G] [B] 0x00 0x00 0x0f [CS]</code></li>
+<li><strong>Voorbeeld (Blauw op max):</strong> <code>31 00 00 ff 00 00 0f 3f</code></li>
+</ul>
+<p><em>Let op: In de specifieke opstelling van dit project (gele LED-strip) reageert de helderheid op het <strong>Blauwe</strong> kanaal (Parameter 3).</em></p>
+<h2 id="4-checksum-berekening">4. Checksum Berekening</h2>
+<p>De checksum is de som van alle bytes in de payload (vanaf de Command Byte tot en met de laatste padding byte).</p>
+<p><strong>Voorbeeld in C++:</strong></p>
+<pre class="hljs"><code><div><span class="hljs-keyword">uint8_t</span> cs = <span class="hljs-number">0</span>;
+<span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i = <span class="hljs-number">8</span>; i &lt; <span class="hljs-number">15</span>; i++) {
+    cs += pakket[i];
+}
+pakket[<span class="hljs-number">15</span>] = cs;</div></code></pre>
+
+</body>
+</html>
